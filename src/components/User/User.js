@@ -1,7 +1,7 @@
 const User = (porps) => {
     return (
         <div>
-            user component
+            User component
         </div>
     )
 }

@@ -1,7 +1,7 @@
 const Admin = (porps) => {
     return (
         <div>
-            user component
+            Admin component
         </div>
     )
 }
