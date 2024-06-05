@@ -11,6 +11,14 @@ import {
   import { FaTachometerAlt, FaGem, FaList, FaGithub, FaRegLaughWink, FaHeart } from 'react-icons/fa';
   import sidebarBg from '../../assets/bg2.jpg';
 
+  import { MdOutlineAdminPanelSettings } from "react-icons/md";
+  import { MdDashboard } from "react-icons/md";
+
+  import { Link } from 'react-router-dom';
+
+  import './SideBar.scss'
+
+
 const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
     return (
         <>
@@ -34,29 +42,37 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
                             whiteSpace: 'nowrap',
                         }}
                     >
-                        Sandy's Quiz App
+                        <MdOutlineAdminPanelSettings size={'2.5rem'} style={{ color: '#fff' }} />
+                        <span> Sandy's Quiz App</span>
                     </div>
                 </SidebarHeader>
 
                 <SidebarContent>
                     <Menu iconShape="circle">
                         <MenuItem
-                            icon={<FaTachometerAlt />}
-                            suffix={<span className="badge red">New</span>}
+                            icon={<MdDashboard />}
                         >
                             Dashboard
+                            <Link to="/admin" />
                         </MenuItem>
-                        <MenuItem icon={<FaGem />}>components </MenuItem>
                     </Menu>
                     <Menu iconShape="circle">
                         <SubMenu
-                            suffix={<span className="badge yellow">3</span>}
-                        
-                            icon={<FaRegLaughWink />}
-                        >
-                            <MenuItem>1</MenuItem>
-                            <MenuItem>2</MenuItem>
-                            <MenuItem>3</MenuItem>
+                            icon={<FaGem />}
+                            title='Features'
+                        >   
+                            <MenuItem>Manage Users
+                            <Link to="/admin/manage-user" />
+                            </MenuItem>
+
+                            <MenuItem>Manage Quizzes
+                            <Link to="/admin/manage-quiz" />
+                            </MenuItem>
+
+                            <MenuItem>Manage Questions
+                            <Link to="/admin/manage-question" />
+                            </MenuItem>
+
                         </SubMenu>
         
                     </Menu>
@@ -70,7 +86,7 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
                         }}
                     >
                         <a
-                            href="https://github.com/azouaoui-med/react-pro-sidebar"
+                            href="https://github.com/dhapham"
                             target="_blank"
                             className="sidebar-btn"
                             rel="noopener noreferrer"
