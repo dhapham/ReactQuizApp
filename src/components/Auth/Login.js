@@ -3,20 +3,24 @@ import './Login.scss';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { postLogin } from '../../services/apiService';
+import { useDispatch } from 'react-redux';
+import { doLogin } from '../../redux/action/userAction';
+import { FaSpinner } from "react-icons/fa";
 
 const Login = (props) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const dispatch = useDispatch();
     const navigate = useNavigate();
-
+    const [isLoading, setIsLoading] = useState(false);
     const validateEmail = (email) => {
         return String(email)
-          .toLowerCase()
-          .match(
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-          );
-      };
-      
+            .toLowerCase()
+            .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            );
+    };
+
     const handleLogin = async () => {
         // validate
         const isValidEmail = validateEmail(email);
@@ -30,16 +34,23 @@ const Login = (props) => {
             toast.error('Invalid Password')
             return;
         }
+        // always set true -> reset the value
+        setIsLoading(true);
 
         // submit apis
         let data = await postLogin(email, password)
         if (data && data.EC === 0) {
+            // dispatch inside react component
+            dispatch(doLogin(data))
             toast.success(data.EM);
+            setIsLoading(false);
             navigate('/')
         }
 
         if (data && +data.EC !== 0) {
             toast.error(data.EM);
+            setIsLoading(false);
+
         }
     }
 
@@ -75,7 +86,12 @@ const Login = (props) => {
                 <span className='forgot-password'>Forgot password?</span>
                 <div>
                     <button className='btn-submit'
-                        onClick={() => handleLogin()}>Login to the app</button>
+                        onClick={() => handleLogin()}
+                        disabled={isLoading}
+                    >
+                        {isLoading == true && <FaSpinner className='loader-icon' />}
+                        <span>Login to the app</span>
+                    </button>
                 </div>
                 <div className='back text-center'>
                     <span onClick={() => { navigate('/') }}> &#60; &#60; Go to HomePage</span>
