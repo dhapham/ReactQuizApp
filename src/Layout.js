@@ -13,6 +13,7 @@ import ListQuiz from "./components/User/ListQuiz"
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import DetailQuiz from "./components/User/DetailQuiz";
+import ManageQuiz from "./components/Admin/Content/Quiz/ManageQuiz";
 
 
 const NotFound = () => {
@@ -35,6 +36,8 @@ const Layout = (props) => {
                 <Route path="admin" element={<Admin />}>
                     <Route index element={<DashBoard />} />
                     <Route path="manage-user" element={<ManageUser />} />
+                    <Route path="manage-quiz" element={<ManageQuiz />} />
+
                 </Route>
 
                 <Route path="/login" element={<Login />} />
