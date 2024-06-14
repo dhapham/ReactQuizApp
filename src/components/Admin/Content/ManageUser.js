@@ -145,8 +145,6 @@ const ManageUser = (props) => {
           fetchListUsersWithPaginate={fetchListUsersWithPaginate}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
-
-
         />
       </div>
     </div>

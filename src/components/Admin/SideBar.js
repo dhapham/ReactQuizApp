@@ -21,11 +21,13 @@ import sidebarBg from "../../assets/bg2.jpg";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import { MdDashboard } from "react-icons/md";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import "./SideBar.scss";
 
 const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
+  const navigate = useNavigate();
+  
   return (
     <>
       <ProSidebar
@@ -52,7 +54,7 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
               size={"2.5rem"}
               style={{ color: "#fff" }}
             />
-            <span> Sandy's Quiz App</span>
+            <span onClick={(() => navigate('/'))}> Sandy's Quiz App</span>
           </div>
         </SidebarHeader>
 
@@ -77,7 +79,7 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
 
               <MenuItem>
                 Manage Questions
-                <Link to="/admin/manage-question" />
+                <Link to="/admin/manage-questions" />
               </MenuItem>
             </SubMenu>
           </Menu>

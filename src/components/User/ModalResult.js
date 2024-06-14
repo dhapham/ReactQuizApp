@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
@@ -6,8 +6,6 @@ import Modal from 'react-bootstrap/Modal';
 const ModalResult = (props) => {
     const { show, setShow, dataModalResult } = props;
     const handleClose = () => setShow(false);
-
-    console.log('check data', setShow)
 
     return (
         <>

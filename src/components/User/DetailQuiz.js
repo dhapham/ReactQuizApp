@@ -79,7 +79,7 @@ const DetailQuiz = (props) => {
         }
     }
 
-    const handleFinishQuiz = async () => {
+    const handleFinishQuiz = async() => {
         let payload = {
             quizId: +quizId,
             answers: []
@@ -96,14 +96,15 @@ const DetailQuiz = (props) => {
                         // console.log(a.id)
                     }
                 })
-
                 answers.push({
                     questionId: +questionId,
                     userAnswerId: userAnswerId
                 })
             })
             payload.answers = answers;
+
             // submit api
+            
             let res = await postSubmitQuiz(payload);
             console.log('check res', res)
             if (res && res.EC === 0) {
@@ -147,7 +148,7 @@ const DetailQuiz = (props) => {
             <ModalResult
                 show={isShowModalResult}
                 setShow={setIsShowModalResult}
-                dataModalResult={setDataModalResult}
+                dataModalResult={dataModalResult}
             />
 
         </div>
