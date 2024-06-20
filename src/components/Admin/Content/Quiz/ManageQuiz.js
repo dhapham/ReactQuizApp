@@ -6,6 +6,8 @@ import { postCreatNewQuiz } from '../../../../services/apiService';
 import { toast } from 'react-toastify';
 import TableQuiz from './TableQuiz';
 import Accordion from 'react-bootstrap/Accordion';
+import AssignQuiz from "./AssignQuiz";
+import QuizQA from "./QuizQA";
 // import ModalDeleteQuiz from "./ModalDeleteQuiz";
 // import { getAllQuizForAdmin } from "../../../../services/apiService";
 
@@ -68,9 +70,10 @@ const ManageQuiz = (props) => {
 
     return (
         <div className="quiz-container">
-            <Accordion defaultActiveKey="0">
+            {/* <Accordion defaultActiveKey="0"> */}
+            <Accordion>
                 <Accordion.Item eventKey="0">
-                    <Accordion.Header> Manage Quizzes</Accordion.Header>
+                    <Accordion.Header> Manage Quizzes - Reload after save please</Accordion.Header>
                     <Accordion.Body>
                         <div className="add-new">
                             <fieldset className="border rounded-3 p-3">
@@ -115,22 +118,29 @@ const ManageQuiz = (props) => {
                             </fieldset>
 
                         </div>
-
+                        <div className="list-detail">
+                            <TableQuiz />
+                        </div>
+                    </Accordion.Body>
+                </Accordion.Item>
+                <Accordion.Item eventKey="1">
+                    <Accordion.Header>
+                        Update Q/A Quizzes
+                    </Accordion.Header>
+                    <Accordion.Body>
+                        <QuizQA />
+                    </Accordion.Body>
+                </Accordion.Item>
+                <Accordion.Item eventKey="2">
+                    <Accordion.Header>
+                        Assign to Users
+                    </Accordion.Header>
+                    <Accordion.Body>
+                        <AssignQuiz />
                     </Accordion.Body>
                 </Accordion.Item>
             </Accordion>
 
-            <div className="list-detail">
-                <TableQuiz />
-                {/* <ModalDeleteQuiz
-                    show={showModalDeleteQuiz}
-                    handleClickBtnDelete={handleClickBtnDelete}
-
-                    setShow={setShowModalDeleteQuiz}
-                    dataDelete={dataDelete}
-                    fetchQuiz={fetchQuiz}
-                /> */}
-            </div>
 
         </div>
     )

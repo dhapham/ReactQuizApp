@@ -22,9 +22,9 @@ const ModalResult = (props) => {
                     <div>Total Correct Answers: {dataModalResult.countCorrect}</div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    {/* <Button variant="secondary" onClick={handleClose}>
                         Show answers
-                    </Button>
+                    </Button> */}
                     <Button variant="primary" onClick={handleClose}>
                         Close
                     </Button>

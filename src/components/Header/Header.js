@@ -4,13 +4,18 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../../assets/app-logo.svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../services/apiService";
+import { toast } from "react-toastify";
+import { doLogout } from "../../redux/action/userAction";
+
 
 const Header = () => {
 
   const isAuthenticated = useSelector(state => state.user.isAuthenticated)
-  const account = useSelector(state => state.user.account)
-
+  const account = useSelector(state => state.user.account);
+  // const isAdmin = useSelector((state) => state.user.isAdmin);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -19,6 +24,28 @@ const Header = () => {
   const handleRegister = () => {
     navigate('/register');
   }
+
+  const handleLogOut = async () => {
+    let rs = await logout("account.email", account.refresh_token);
+    if (rs && rs.EC === 0) {
+      // clear data
+      dispatch(doLogout());
+      navigate('/login');
+    } else {
+      toast.error(rs.EM)
+    }
+  }
+
+  const handleAdminClick = (event) => {
+    event.preventDefault();
+    if (isAuthenticated && account.role === 'USER') {
+      toast.error("You do not have permission to access the admin page.");
+    } else {
+      navigate("/admin");
+    }
+  };
+
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
@@ -39,9 +66,10 @@ const Header = () => {
             <NavLink to="/user" className="nav-link">
               User
             </NavLink>
-            <NavLink to="/admin" className="nav-link">
+            <NavLink onClick={handleAdminClick} className="nav-link admin-link">
               Admin
             </NavLink>
+
           </Nav>
           <Nav>
             {isAuthenticated === false ?
@@ -51,8 +79,9 @@ const Header = () => {
               </>
               :
               <NavDropdown title="Settings" id="basic-nav-dropdown">
-                <NavDropdown.Item>Log Out</NavDropdown.Item>
                 <NavDropdown.Item>Profile</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => handleLogOut()}>Log Out</NavDropdown.Item>
+
               </NavDropdown>
             }
 

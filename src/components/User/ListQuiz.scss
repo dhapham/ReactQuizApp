@@ -1,4 +1,11 @@
 .list-quiz-container {
     display: flex;
     gap: 50px;
+    flex-wrap: wrap;
+    .card {
+        min-width: 300px;
+        img {
+            min-height: 300px;
+        }
+    }
 }

@@ -9,12 +9,9 @@ import {
   SidebarContent,
 } from "react-pro-sidebar";
 import {
-  FaTachometerAlt,
   FaGem,
-  FaList,
   FaGithub,
-  FaRegLaughWink,
-  FaHeart,
+  FaAnglesLeft
 } from "react-icons/fa";
 import sidebarBg from "../../assets/bg2.jpg";
 
@@ -54,17 +51,17 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
               size={"2.5rem"}
               style={{ color: "#fff" }}
             />
-            <span onClick={(() => navigate('/'))}> Sandy's Quiz App</span>
+            <span className="logo" onClick={(() => navigate('/'))}> Sandy's Quiz App</span>
           </div>
         </SidebarHeader>
 
         <SidebarContent>
-          <Menu iconShape="circle">
+          {/* <Menu iconShape="circle">
             <MenuItem icon={<MdDashboard />}>
               Dashboard
               <Link to="/admin" />
             </MenuItem>
-          </Menu>
+          </Menu> */}
           <Menu iconShape="circle">
             <SubMenu icon={<FaGem />} title="Features">
               <MenuItem>

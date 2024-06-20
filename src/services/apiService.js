@@ -66,7 +66,7 @@ const postLogin = (userEmail, userPassword) => {
         `api/v1/login`, {
         email: userEmail,
         password: userPassword,
-        delay: 2000
+        delay: 500
     }
     );
 }
@@ -111,9 +111,49 @@ const getAllQuizForAdmin = (id) => {
 
 const deleteQuizForAdmin = (id) => {
     return axios.delete(`/api/v1/quiz/${id}`);
+
+}
+
+const postCreatNewQuestionForQuiz = (quiz_id, description, image) => {
+    const data = new FormData();
+    data.append('quiz_id', quiz_id);
+    data.append('description', description)
+    data.append('questionImage', image);
+    return axios.post(
+        "api/v1/question",
+        data
+    );
+
+}
+
+const postCreatNewAnswerForQuestion = (description, correct_answer, question_id) => {
+    return axios.post(
+        "api/v1/answer", {
+        description, correct_answer, question_id
+    });
+}
+
+const logout = (email, refresh_token) => {
+    return axios.post('api/v1/logout' , {
+        email, refresh_token
+    });
+}
+
+const postAssignQuiz = (quizId, userId) => {
+    return axios.post('api/v1/quiz-assign-to-user', {
+        quizId, userId
+    });
+}
+
+const getQuizWithQA = (quizId) => {
+    return axios.get(`api/v1/quiz-with-qa/${quizId}`);
+}
+const postUpsertQA = (data) => {
+    return axios.post(`api/v1/quiz-upsert-qa`, {...data})
 }
 
 export {
     postCreateNewUser, getAllUsers, putUpdateUser, putViewUser, deleteUser,
-    getUserWithPaginate, postLogin, postRegister, getQuizByUser, getDataQuiz, postSubmitQuiz, postCreatNewQuiz , getAllQuizForAdmin, deleteQuizForAdmin
+    getUserWithPaginate, postLogin, postRegister, getQuizByUser, getDataQuiz, postSubmitQuiz, postCreatNewQuiz, getAllQuizForAdmin, deleteQuizForAdmin,
+    postCreatNewQuestionForQuiz, postCreatNewAnswerForQuestion, logout, postAssignQuiz, getQuizWithQA, postUpsertQA
 }

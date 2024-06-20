@@ -5,12 +5,16 @@
       height: 100vh;
     }
   }
-  .admin-cotent {
+  .admin-content {
     width: 100%;
-
     .admin-header {
-      height: 40px;
-      border: 1px solid green;
+      height: 50px;
+      // color: blue;
+      padding: 7px;
+      svg {
+        height: 2em;
+        width: 1.5em;
+      }
     }
     .admin-main {
       height: calc(100vh - 50px);

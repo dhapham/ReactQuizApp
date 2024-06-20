@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Select from 'react-select';
-import './Questions.scss';
+import './QuizQA.scss';
 import { TbCameraPlus } from "react-icons/tb";
 import { IoTrashOutline } from "react-icons/io5";
 import Lightbox from "react-awesome-lightbox";
@@ -9,11 +9,11 @@ import { FiMinusCircle } from "react-icons/fi";
 import { BiImageAdd } from "react-icons/bi";
 import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash';
-import { getAllQuizForAdmin, postCreatNewAnswerForQuestion, postCreatNewQuestionForQuiz } from "../../../../services/apiService";
+import { getQuizWithQA, getAllQuizForAdmin, postUpsertQA } from "../../../../services/apiService";
 import { toast } from 'react-toastify';
 
 
-const Questions = (props) => {
+const QuizQA = (props) => {
     const initQuestions = [
         {
             id: uuidv4(),
@@ -42,6 +42,39 @@ const Questions = (props) => {
     useEffect(() => {
         fetchQuiz()
     }, [])
+
+    useEffect(() => {
+        if (selectedQuiz && selectedQuiz.value) {
+            fetchQuizWithQA();
+        }
+    }, [selectedQuiz])
+
+
+    // return a promise that resolves with a File instance
+    function urltoFile(url, filename, mimeType) {
+        return fetch(url)
+            .then(res => res.arrayBuffer())
+            .then(buf => new File([buf], filename, { type: mimeType }));
+    }
+
+    const fetchQuizWithQA = async () => {
+        let rs = await getQuizWithQA(selectedQuiz.value);
+        if (rs && rs.EC === 0) {
+            // convert base64 to object
+            let newQA = [];
+            for (let i = 0; i < rs.DT.qa.length; i++) {
+                let q = rs.DT.qa[i]
+                if (q.imageFile) {
+                    q.imageName = `Question-${q.id}.png`;
+                    q.imageFile = await urltoFile(`data:image/png;base64,${q.imageFile}`, `Question-${q.id}.png`, 'image/png')
+                }
+                newQA.push(q);
+            }
+            setQuestions(newQA);
+            console.log(">>>check rs", rs)
+        }
+
+    }
 
     const fetchQuiz = async () => {
         let res = await getAllQuizForAdmin();
@@ -165,20 +198,19 @@ const Questions = (props) => {
         // Validate answer
         let isValidAnswer = true;
         let indexQ = 0, indexA = 0;
-        for( let i = 0; i<questions.length; i++) {
-            
-            for(let j = 0; j< questions[i].answers.length; j++){
-                if(!questions[i].answers[j].description){
+        for (let i = 0; i < questions.length; i++) {
+            for (let j = 0; j < questions[i].answers.length; j++) {
+                if (!questions[i].answers[j].description) {
                     isValidAnswer = false;
                     indexA = j
                     break;
                 }
             }
             let indexQ = i;
-            if(isValidAnswer === false) break;
+            if (isValidAnswer === false) break;
         }
 
-        if(isValidAnswer === false) {
+        if (isValidAnswer === false) {
             toast.error(`Not empty answer ${indexA + 1} at Question ${indexQ + 1}`)
             return;
         }
@@ -186,47 +218,68 @@ const Questions = (props) => {
         // Validate question
         let isValidQ = true;
         let indexQ1 = 0;
-        for( let i = 0; i < questions.length; i++) {
-            if(!questions[i].description){
+        for (let i = 0; i < questions.length; i++) {
+            if (!questions[i].description) {
                 isValidQ = false;
                 indexQ1 = i;
                 break;
             }
-    
+
         }
-        if(isValidQ === false) {
+        if (isValidQ === false) {
             toast.error(`Not empty description for Question ${indexQ1 + 1}`);
             return;
         }
 
-        for (const question of questions) {
-            const q = await postCreatNewQuestionForQuiz(
-                +selectedQuiz.value,
-                question.description,
-                question.imageFile);
-            // submit answer
-            for (const answer of question.answers) {
-                await postCreatNewAnswerForQuestion(
-                    answer.description, answer.isCorrect, q.DT.id
-                )
+        // for (const question of questions) {
+        //     const q = await postCreatNewQuestionForQuiz(
+        //         +selectedQuiz.value,
+        //         question.description,
+        //         question.imageFile);
+        //     // submit answer
+        //     for (const answer of question.answers) {
+        //         await postCreatNewAnswerForQuestion(
+        //             answer.description, answer.isCorrect, q.DT.id
+        //         )
+        //     }
+        // }
+
+        let questionsClone = _.cloneDeep(questions);
+        for (let i = 0; i < questionsClone.length; i++) {
+            if (questionsClone[i].imageFile) {
+                questionsClone[i].imageFile =
+                    await toBase64(questionsClone[i].imageFile)
             }
         }
+        let res = await postUpsertQA({
+            quizId: selectedQuiz.value,
+            questions: questionsClone
+        });
 
-        toast.success('Create question and answers succeed')
-        setQuestions(initQuestions);
+        if (res && res.EC === 0) {
+            toast.success(res.EM);
+            fetchQuizWithQA();
+        }
+
+
+        console.log("check question clone", questionsClone)
     }
+
+    const toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+    });
+
+    console.log("check question ", questions)
+
 
     return (
         <div className="questions-container">
-            <div className="title">
-                Manage Questions
-            </div>
             <div className="add-new-question">
-
-
                 <div className='mt-3 mb-2 question-title'>
                     Add questions:
-
                     {questions && questions.length > 0
                         && questions.map((question, index) => {
                             return (
@@ -341,4 +394,4 @@ const Questions = (props) => {
         </div>
     )
 }
-export default Questions;
+export default QuizQA;
