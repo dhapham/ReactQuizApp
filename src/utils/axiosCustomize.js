@@ -7,8 +7,12 @@ NProgress.configure({
     trickleSpeed: 100,
 });
 
+// const instance = axios.create({
+//     baseURL: 'http://localhost:8081/',
+// });
+
 const instance = axios.create({
-    baseURL: 'http://localhost:8081/',
+    baseURL: 'https://sandy-quiz-app-backend.onrender.com',
 });
 
 // Add a request interceptor
