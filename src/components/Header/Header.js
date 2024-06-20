@@ -41,7 +41,7 @@ const Header = () => {
     if (isAuthenticated && account.role === 'USER') {
       toast.error("You do not have permission to access the admin page.");
     } else {
-      navigate("/admin");
+      navigate("/admin/manage-user");
     }
   };
 
