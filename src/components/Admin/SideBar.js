@@ -24,7 +24,7 @@ import "./SideBar.scss";
 
 const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
   const navigate = useNavigate();
-  
+
   return (
     <>
       <ProSidebar
@@ -68,15 +68,13 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
                 Manage Users
                 <Link to="/admin/manage-user" />
               </MenuItem>
-
-              <MenuItem>
-                Manage Quizzes
-                <Link to="/admin/manage-quiz" />
-              </MenuItem>
-
               <MenuItem>
                 Manage Questions
                 <Link to="/admin/manage-questions" />
+              </MenuItem>
+              <MenuItem>
+                Manage Quizzes
+                <Link to="/admin/manage-quiz" />
               </MenuItem>
             </SubMenu>
           </Menu>
@@ -90,7 +88,7 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
             }}
           >
             <a
-              href="https://github.com/dhapham"
+              href="https://github.com/dhapham/ReactQuizApp"
               target="_blank"
               className="sidebar-btn"
               rel="noopener noreferrer"

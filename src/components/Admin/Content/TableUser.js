@@ -22,7 +22,7 @@ const TableUser = (props) => {
                 <tbody>
                     {listUsers && listUsers.length > 0 &&
                         listUsers.map((item, index) => {
-                            console.log()
+                            console.log(item.username)
                             return (
                                 <tr key={`table-users-${index}`}>
                                     <td scope="row">{item.id}</td>

@@ -75,7 +75,7 @@ const postLogin = (userEmail, userPassword) => {
 
 const postRegister = (userEmail, userPassword, userUsername) => {
     return axios.post(
-        `api/v1/register`, { email: userEmail, password: userPassword, user: userUsername }
+        `api/v1/register`, { email: userEmail, password: userPassword, username: userUsername }
     );
 }
 
